@@ -1,10 +1,12 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
+
 import styled from "styled-components";
+import Error from "../Error/Error";
 import { url } from "../Key";
 import MainPage from "../MainAutoPositon/MainPage";
+
 
 import MainSearchDisplay from "./MainSearchDisplay";
 
@@ -15,6 +17,14 @@ const Main = styled.div`
 display: flex;
 justify-content: space-evenly;
 align-content: center;
+  @media (max-width: 770px) {
+ 
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    
+     font-size: 0.8rem;
+  }
 
 
 `
@@ -61,10 +71,12 @@ const Form = styled.form`
 
 const MainSearchBar = () => {
 
+
     const [weather, setTWeather] = useState({});
     const [forecast, setForecast] = useState({});
     const [display, setDisplay] = useState(false);
     const [city, setCity] = useState('');
+    const [error, setError] = useState(false);
 
 
     function setcityhandler(event) {
@@ -77,9 +89,6 @@ const MainSearchBar = () => {
                 const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${url}`)
 
 
-
-
-
                 if (response.ok) {
                     const json = await response.json();
                     setTWeather(json)
@@ -90,11 +99,14 @@ const MainSearchBar = () => {
                     return json
 
                 } else {
+                    setError(true);
 
                     throw new Error('There was an error' + response.status)
                 }
 
             } catch (error) {
+
+                setError(true);
 
                 console.log(error)
             }
@@ -118,12 +130,13 @@ const MainSearchBar = () => {
                     return json
 
                 } else {
+                    setError(true);
 
                     throw new Error('There was an error' + response.status)
                 }
 
             } catch (error) {
-
+                setError(true);
                 console.log(error)
             }
 
@@ -136,22 +149,26 @@ const MainSearchBar = () => {
 
 
 
+
     return (
         <div>
 
-            {!display && <Form onSubmit={setcityhandler} >
+            {!display && !error && <Form onSubmit={setcityhandler} >
                 <Input placeholder="Search location" value={city} onChange={(event) => setCity(event.target.value)} />
                 <Button onClick={setcityhandler}>Search <AiOutlineSearch /></Button>
 
             </Form >}
 
-            {display && <Main>
+            {display && !error && <Main>
+
 
                 <MainSearchDisplay weather={weather} />
                 <MainPage forecast={forecast} weather={weather} />
 
-            </Main>}
 
+
+            </Main>}
+            {error && <Error />}
         </div>
     )
 }

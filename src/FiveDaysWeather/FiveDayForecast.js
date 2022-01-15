@@ -10,6 +10,13 @@ justify-content: space-between;
 align-content: center;
 text-align: center;
 
+  @media (max-width: 770px) {
+ 
+ 
+    // width: ;
+   
+    //  font-size: 0.8rem;
+  }
 
 `
 

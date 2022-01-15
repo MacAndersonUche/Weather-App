@@ -5,11 +5,24 @@ const TodayComponets = styled.div`
 background-Color: #0F5A80;
 height: 10rem;
 width: 22.5rem;
-// display: flex;
-// justify-content: center;
-// align-content: center;
+
 text-align: center;
 margin: 0.5rem; 1rem;
+
+
+  @media (max-width: 1000px) {
+ 
+    height: 30%;
+    width: 30%;
+    
+     font-size: 0.8rem;
+
+     text-align: center;
+  }
+
+
+
+
 `
 
 const Main = styled.div`
@@ -20,6 +33,18 @@ width: 100%;
 
  align-content: space-evenly;
  text-align: center;
+
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-content: space-evenly;
+    height: 20rem;
+    width: 100%;
+    
+     font-size: 0.8rem;
+       text-align: center;
+  }
 
 `
 

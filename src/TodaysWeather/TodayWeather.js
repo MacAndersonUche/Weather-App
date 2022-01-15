@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import MainSearchBar from "../MainSearchPosition/MainSearchBar";
 import WeatherDiv from "./WeatherDiv"
 
 
