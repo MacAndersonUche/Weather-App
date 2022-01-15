@@ -4,7 +4,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 import styled from "styled-components";
 import Error from "../Error/Error";
-import { url } from "../Key";
 import MainPage from "../MainAutoPositon/MainPage";
 
 
@@ -86,7 +85,7 @@ const MainSearchBar = () => {
 
         async function searchWeather() {
             try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${url}`)
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_MYKEY}`)
 
 
                 if (response.ok) {
@@ -115,7 +114,7 @@ const MainSearchBar = () => {
 
         async function searchFiveDay() {
             try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${url}`)
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.REACT_APP_MYKEY}`)
 
 
 

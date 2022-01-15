@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import { url } from "./Key";
 import MainPage from "./MainAutoPositon/MainPage";
 import MainSearchBar from "./MainSearchPosition/MainSearchBar";
 import TodaysWeather from "./TodaysWeather/TodayWeather";
@@ -30,8 +29,11 @@ align-content: center;
 
 `
 
+// const key = process.env.REACT_KEY
 
+// console.log(key)
 
+console.log(process.env.REACT_APP_MYKEY)
 
 function App() {
 
@@ -95,7 +97,7 @@ function App() {
       async function searchWeather() {
         try {
 
-          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude && position.coords.latitude}&lon=${position.coords.longitude && position.coords.longitude}&appid=${url}`)
+          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude && position.coords.latitude}&lon=${position.coords.longitude && position.coords.longitude}&appid=${process.env.REACT_APP_MYKEY}`)
 
 
 
@@ -112,11 +114,13 @@ function App() {
 
           } else {
 
+            setError(true)
+
             throw new Error('There was an error' + response.status)
           }
 
         } catch (error) {
-
+          setError(true)
           console.log(error)
         }
 
@@ -125,7 +129,7 @@ function App() {
       async function searchFiveDay() {
         try {
 
-          const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude && position.coords.latitude}&lon=${position.coords.longitude && position.coords.longitude}&appid=${url}`)
+          const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude && position.coords.latitude}&lon=${position.coords.longitude && position.coords.longitude}&appid=${process.env.REACT_APP_MYKEY}`)
 
 
 
@@ -140,12 +144,12 @@ function App() {
             return json
 
           } else {
-
+            setError(true)
             throw new Error('There was an error' + response.status)
           }
 
         } catch (error) {
-
+          setError(true)
           console.log(error)
         }
 
@@ -153,15 +157,14 @@ function App() {
       searchFiveDay();
       searchWeather();
       setLoading(false);
+      setError(false)
     });
     setTempState(`${cel} C`)
 
 
   }, [cel])
 
-  if (error && loading) {
-    return <ErrorLocation />
-  }
+
 
   return (
     <Switch>
@@ -172,11 +175,13 @@ function App() {
       </Route>
       <Route path="/">
         <Main>
-          {!loading && <AppContext.Provider value={globalContext}>
+          {!loading && !error && <AppContext.Provider value={globalContext}>
             <TodaysWeather weather={weather} setSearchClicked={setSearchClicked} searchClicked={searchClicked} />
             <MainPage weather={weather} forecast={forecast} searchClicked={searchClicked} />
           </AppContext.Provider>}
           {loading && <Loading />}
+
+          {error && !loading && <ErrorLocation />}
         </Main>
       </Route>
     </Switch>
